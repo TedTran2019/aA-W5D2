@@ -1,0 +1,172 @@
+Associations -> if you have a has_many :tags, in addition to having the
+#tags method, you'll also have #tag_ids and #tag_ids=
+
+What tag_ids=(new_tag_ids) would do is query the object's tags, builds new tags out of
+the new_tag_ids given, old tags destroyed(if not in newtags)
+
+Look at what happens when you subtract 2 arrays in Ruby-- how cool.
+Transaction -> all or nothing!
+---------------------------
+Checkboxes!
+Notice how in forms, you can send up a bunch of values to the same key and
+Rack can convert it into an array
+Empty square bracket in name tag, Ex. cat[tag_id][] so Rails will actually
+make an array instead of using the last value
+
+If more than one database operation, make sure to do it atomically!
+
+On associations, use "inverse_of". So if you have Cat.taggings, you can build
+the opposite Tagging.cat. Use if the object hasn't been saved to the database
+yet, aka no id but you want associations to work! So when you create a new
+tagging object, which requires cat_id and tag_id, but the cat hasn't been
+saved to the database yet... inverse of will come in handy, along with
+validating the presence of the cat instead of cat_id!
+(I think in general for belongs_to, you validate the object not the id)
+
+In etc_params when permitting, if it's an array of things, you need to use the
+special syntax of "thing: []"
+
+However, starting from Rails 4, inverse_of is attempted to be determined
+automatically.
+Can use #has_inverse? to check if it's missing aka you need to manually set
+If the association has diff. foreign keys, manually set inverse_of by the
+name of the opposing association.
+
+In the form to see if checked, just 'checked' if #etc.include?(etc)
+Ohh, something has to be selected or nothing happens. (Instead of unselecting all)
+Way to do: hidden input tag that just uploads one value of ""
+
+How to use a query string?
+Ex. /cats?tag=Hungry
+Ex. if params[:tag], then Tag#find_by(etc: params[:tag]).cats to find
+all cats with that tag
+
+https://guides.rubyonrails.org/association_basics.html#polymorphic-associations
+Damn, polymorphic associations keeps popping up!
+
+Concern -> module that allows to add class/instance methos and run code
+at class definition time all from one convenient file
+Rather than just include/extend for modules, can just do both with a concern!
+Comes especially in handy for polymorphic associations!
+------------------------------------------------------------------------
+Ex. for taggable
+# app/models/concerns/taggable.rb
+# file name must be the same as our module's name
+module Taggable
+  # this module becomes a concern thanks to this line
+  extend ActiveSupport::Concern
+
+  # code in this block will be run in class scope when the concern is included
+  included do
+    # validations and associations usually go here
+    has_many :taggings, as: :taggable
+    has_many :tags, through: :taggings
+    validates #...
+    # etc
+  end
+
+  # tags_string will become an instance method
+  def tags_string
+    tags.map(&:name).join(', ')
+  end
+
+  # methods defined in here become class methods
+  module ClassMethods
+
+    # this will become a class method
+    # it should return all the elements that are tagged 'tag_name'
+    def by_tag_name(tag_name)
+      self.joins(:tags).where('tags.name' => tag_name)
+    end
+  end
+end
+
+# app/models/question.rb
+class Question < ApplicationRecord
+  include Taggable
+  # ...
+end
+
+# app/models/answer.rb
+class Answer < ApplicationRecord
+  include Taggable
+  # ...
+end
+------------------------------------------------------------------------
+
+CSS Positioning -> relative, absolute, fixed, static, sticky
+z-index to choose what goes on top/botom/etc, only applies to elements
+positioned w/ relative/absolute/fixed. z-index on parent container also
+dictates its children
+
+static/relative take minimal height and max width like normal block elements
+
+static -> can't be positioned used left/right/top/bottom/etc, takes up space
+
+relative -> can be positioned, takes up space, can't nudge conflicting properties,
+commonly used as coordinate system for absolute or to set z-index
+
+absolute -> can be positioned, takes not take up space, shows up near closest
+non-static ancestor, w/ nested absolute, non-static ancestor rule applies,
+w/ absolute can do 0 all(only works if no fixed width/height)--expands to fill
+complete parent container, take least amount of space height/width, margins work
+but do not collapse
+
+fixed -> just stuck to one spot on viewport, takes up no space, coordinate system
+is always the window (think fixed nav- top 0 left 0 width 100%), same properties
+as absolute elements otherwise
+
+overflow -> if fixed height but not enough space, it overflows -> controls what
+happens during overflow. If overflow:hidden is set on static element, can only
+clip static children.To clip absolute positioned children, the parent must be
+set to relative/absolute/fixed w/ overflow:hidden
+
+Calc() -> CSS function, can combine diff units, do add/sub/mult/div, paren
+to denote order.
+-------------------------------------------
+
+Decorators -> Decator Pattern -> design pattern for adding new functionality
+to an object w/o altering class. In Ruby, typically accomplsiehd by creating a
+new class that wraps an instance of another class, aka defining new methods to
+augment functionality of the wrapped object while delegating calls to all other
+methods to that object w/ method_missing
+https://en.wikipedia.org/wiki/Decorator_pattern
+
+W/ decators, enhance model objects without cluttering up model class.
+
+Draper gem -> app/decorators -> <ModelName>Decorator < Draper::Decoractor,
+call delegate_all macro inside decorator class
+-what delegate_all does is delegate calls to any' methods not defined to the
+instance it wraps
+-in decorator class, to access wrapped model instance, call #object
+-if access to a URL Or view helper method is needed, call on #h
+
+To use decorator, convert plain model into a decorated instance, call #decorate
+method on a model or collection of models
+
+Decorator methods are pretty damn good for view helper code!
+
+https://www.thegreatcodeadventure.com/rails-refactoring-part-i-the-adapter-pattern/
+Other patterns -> adapter, service objects, decorator pattern
+Practical Object-Oriented Design in Ruby
+http://railscasts.com/episodes/286-draper
+https://github.com/cucumber/cucumber-rails
+BDD -> Behavior Driven Development
+"devise, sidekiq, pry, rspec and rubocop are the top 5 loved gems"
+https://lorefnon.me/2016/01/16/useful-delegation-patterns-for-rails.html
+Delegator pattern!
+
+--------------------------------------------------------------------------------
+https://www.reddit.com/r/ruby/comments/6126br/27_ruby_gems_i_use_in_almost_every_project/
+https://www.reddit.com/r/rails/comments/8r4t96/what_gems_do_you_consider_an_integral_part_of_the/
+Remake a directory for setting up Rails repos, possibly private.
+------------------------------------------------------------------
+
+Checkboxes -> multiple options on a form
+Usage of dependent: :destroy and inverse_of: (usually here is its own class) on
+has_many associations
+
+Rails #etc_id= does everything in a transaction!
+Remember in permit, etc_ids: []
+in view: name = etc[tag_ids][], end up in an array!
+hidden input of "" so empty array is sent when nothing is checked!

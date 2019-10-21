@@ -1,0 +1,16 @@
+<section class="subs-show">
+	<h1><%= @sub.title %></h1>
+	<h3>Description</h3>
+	<p><%= @sub.description %></p>
+
+	<%= link_to 'Make New Post!', new_post_url %>
+
+	<ul>
+		<% @sub.posts.each do |post| %>
+			<li>post.title</li>
+		<% end %>
+	</ul>
+
+	<%= link_to 'Edit', edit_sub_url(@sub) %>
+</section>
+

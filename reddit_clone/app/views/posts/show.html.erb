@@ -1,0 +1,19 @@
+<section class="posts-show">
+	<h1><%= link_to @post.title, post_url(@post) %> by <%= @post.author.username %></h1>
+	<span>
+	Content:
+	<%= @post.content %>
+	</span>
+
+	<!-- Upvote button -->
+	<!-- Downvote Button -->
+
+	<h3>Subs</h3>
+	<ul>
+		<!-- All the subs the post was posted to. -->
+	</ul>
+
+	<h2>Comments</h2>
+	<!-- A link to comment on post -->
+	<!-- List of comments and comments to those comments -->
+</section>

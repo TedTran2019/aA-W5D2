@@ -1,0 +1,18 @@
+<% method = (sub.persisted? ? 'U' : 'C') %>
+<% action = (method == 'U' ? sub_url(sub) : subs_url) %>
+
+<form action="<%=action%>" method="post">
+	<% if method == 'U' %>
+		<input type="hidden" name="_method" value="patch">
+	<% end %>
+	<%= auth_token %>
+
+	<label for="title">Name</label>
+	<input type="text" name="sub[title]" id="title" value="<%= sub.title %>">
+
+	<label for="description">Description</label>
+	<textarea name="sub[description]" id="description" cols="30" rows="10"><%= sub.description %>
+	</textarea>
+
+	<button type="submit">Submit!</button>
+</form>

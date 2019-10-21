@@ -4,6 +4,7 @@ class PostsController < ApplicationController
 	def show
 		@post = Post.find_by(id: params[:id])
 		if @post
+			@all_comments = @post.comments
 			render :show
 		else
 			flash.now[:errors] = "404 not found"
@@ -17,7 +18,7 @@ class PostsController < ApplicationController
 	end
 
 	def edit
-		@post = current_user.posts.find_by(id: params[:id])
+		@post = current_user.written_posts.find_by(id: params[:id])
 		if @post
 			render :edit
 		else
@@ -38,7 +39,7 @@ class PostsController < ApplicationController
 	end
 
 	def destroy
-		@post = current_user.posts.find_by(id: params[:id])
+		@post = current_user.written_posts.find_by(id: params[:id])
 		if @post
 			@post.destroy
 			render :show
@@ -49,7 +50,7 @@ class PostsController < ApplicationController
 	end
 
 	def update
-		@post = current_user.posts.find_by(id: params[:id])
+		@post = current_user.written_posts.find_by(id: params[:id])
 		if @post
 			if @post.update(post_params)
 				render :show

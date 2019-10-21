@@ -13,6 +13,7 @@
 #                                   sub GET    /subs/:id(.:format)                                                                      subs#show
 #                                       PATCH  /subs/:id(.:format)                                                                      subs#update
 #                                       PUT    /subs/:id(.:format)                                                                      subs#update
+#                      new_post_comment GET    /posts/:post_id/comments/new(.:format)                                                   comments#new
 #                                 posts POST   /posts(.:format)                                                                         posts#create
 #                              new_post GET    /posts/new(.:format)                                                                     posts#new
 #                             edit_post GET    /posts/:id/edit(.:format)                                                                posts#edit
@@ -20,6 +21,7 @@
 #                                       PATCH  /posts/:id(.:format)                                                                     posts#update
 #                                       PUT    /posts/:id(.:format)                                                                     posts#update
 #                                       DELETE /posts/:id(.:format)                                                                     posts#destroy
+#                              comments POST   /comments(.:format)                                                                      comments#create
 #                                  root GET    /                                                                                        subs#index
 #         rails_mandrill_inbound_emails POST   /rails/action_mailbox/mandrill/inbound_emails(.:format)                                  action_mailbox/ingresses/mandrill/inbound_emails#create
 #         rails_postmark_inbound_emails POST   /rails/action_mailbox/postmark/inbound_emails(.:format)                                  action_mailbox/ingresses/postmark/inbound_emails#create
@@ -49,7 +51,11 @@ Rails.application.routes.draw do
   resource :session, only: [:create, :destroy, :new]
 
   resources :subs, except: [:destroy]
-  resources :posts, except: [:index]
+  resources :posts, except: [:index] do
+    resources :comments, only: [:new]
+  end
+
+  resources :comments, only: [:create, :show]
 
   root 'subs#index'
 end

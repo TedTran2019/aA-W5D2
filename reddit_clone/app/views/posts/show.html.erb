@@ -16,6 +16,20 @@
 	</ul>
 
 	<h2>Comments</h2>
-	<!-- A link to comment on post -->
-	<!-- List of comments and comments to those comments -->
+	<%= link_to 'Comment on this post!', new_post_comment_url(@post) %>
+
+<!-- N + 1 query solution
+	<% # @post.top_level_comments.each do |comment| %>
+		<%= # render 'comments/comment', comment: comment %>
+	<% # end %>
+-->
+
+
+	<% @all_comments.each do |comment| %>
+		<% next unless comment.parent_comment_id.nil?  %>
+		<%= render 'comments/comment', comment: comment %>
+	<% end %>
+
+
+	<%= link_to 'Edit', edit_post_url(@post) %>
 </section>

@@ -39,7 +39,7 @@ class Post < ApplicationRecord
 	# Returns a hash of comments where keys are parent comment ids
 	def comments_by_parent_id
 		dict = Hash.new { |h, k| h[k] = [] }
-		self.comments.each { |comment| dict[comment.parent_comment_id] << comment }
+		self.comments.includes(:author).each { |comment| dict[comment.parent_comment_id] << comment }
 		dict
 	end
 end

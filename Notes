@@ -170,3 +170,47 @@ Rails #etc_id= does everything in a transaction!
 Remember in permit, etc_ids: []
 in view: name = etc[tag_ids][], end up in an array!
 hidden input of "" so empty array is sent when nothing is checked!
+
+https://apidock.com/rails/v4.2.1/ActiveRecord/Relation/find_or_create_by
+Seems rather useful-- does what it says. Finds, if not there, creates!
+
+Border radius - rounds the corners of an element's outer border edge
+white-space - sets how white space inside an element is handled
+
+Be able to write auth from scratch without looking at previous solutions
+Know how to use a before_action to manage user access to resources
+Be able to write Rails models, controllers, and views quickly
+Know when to use regular associations and when to use join tables
+Know how to avoid N+1 queries
+
+-d for database
+-T for skipping default testing framework
+
+I see now.
+The whole inverse_of along with #etc_ids= method are for when you need
+to create something at the same time.
+e.g if your Post has a validates subs, so you can't save a Post to DB until you make
+a PostSub, but a PostSub requires a Post ID (means you need a Post saved
+to the database)
+
+If you pass in an array of arguments to params, then that into the Etc.new,
+it will do the #etc_ids for you automatically. There's no need to change anything
+in the controller!
+
+Bonuses are
+-------------
+Votes -> polymorphic association -> concerns -> upvote/downvote custom member routes
+Sort posts and comments by score!
+
+Use Friendly ID gem -> human readable names for urls for posts/subs
+kaminari gem to paginate posts (There are probably better options)
+Find N + 1 queries with Bullet then eliminate
+Implement a hotness score that multiplies values of recent votes
+
+Subscription service -> only see posts from said subs on index page
+Search any sub -> including those not subscribed to
+User show page display all of user's posts/comments/total number of votes on
+comments/posts
+Seeds w/ Faker
+Test with rspec and capybara
+Style to make it look like actual Reddit!

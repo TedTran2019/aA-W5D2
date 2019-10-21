@@ -18,8 +18,7 @@
 	<h2>Comments</h2>
 	<%= link_to 'Comment on this post!', new_post_comment_url(@post) %>
 
-	<% @all_comments.each do |comment| %>
-		<% next unless comment.parent_comment_id.nil?  %>
+	<% @comments_dict[nil].each do |comment| %>
 		<%= render 'comments/comment', parent_comment: comment %>
 	<% end %>
 

@@ -4,8 +4,7 @@
 				<%= parent_comment.author.username %>
 				<%= parent_comment.created_at %>
 			</div>
-			<% @all_comments.each do |comment| %>
-				<% next unless parent_comment.id == comment.parent_comment_id %>
+			<% @comments_dict[parent_comment.id].each do |comment| %>
 				<%= render 'comments/comment', parent_comment: comment %>
 			<% end %>
 		</ul>

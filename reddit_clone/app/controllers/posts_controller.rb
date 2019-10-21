@@ -4,7 +4,7 @@ class PostsController < ApplicationController
 	def show
 		@post = Post.find_by(id: params[:id])
 		if @post
-			@all_comments = @post.comments.includes(:author)
+			@comments_dict = @post.comments_by_parent_id
 			render :show
 		else
 			flash.now[:errors] = "404 not found"

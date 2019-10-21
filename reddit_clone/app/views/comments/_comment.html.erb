@@ -1,10 +1,11 @@
-<!-- N + 1 query solution
 		<ul>
-			<li><%= # link_to comment.content, comment_url(comment) %></li>
-
-			<% # comment.child_comments.each do |child_comment| %>
-				<%= # render 'comments/comment', comment: child_comment %>
+			<li><%= link_to parent_comment.content, comment_url(parent_comment) %></li>
+			<div>
+				<%= parent_comment.author.username %>
+				<%= parent_comment.created_at %>
+			</div>
+			<% @all_comments.each do |comment| %>
+				<% next unless parent_comment.id == comment.parent_comment_id %>
+				<%= render 'comments/comment', parent_comment: comment %>
 			<% end %>
 		</ul>
--->
-

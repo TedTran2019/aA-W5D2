@@ -1,13 +1,26 @@
 # == Route Map
 #
 #                                Prefix Verb   URI Pattern                                                                              Controller#Action
-#                                 users GET    /users(.:format)                                                                         users#index
-#                                       POST   /users(.:format)                                                                         users#create
+#                                 users POST   /users(.:format)                                                                         users#create
 #                              new_user GET    /users/new(.:format)                                                                     users#new
 #                           new_session GET    /session/new(.:format)                                                                   sessions#new
 #                               session DELETE /session(.:format)                                                                       sessions#destroy
 #                                       POST   /session(.:format)                                                                       sessions#create
-#                                  root GET    /                                                                                        users#index
+#                                  subs GET    /subs(.:format)                                                                          subs#index
+#                                       POST   /subs(.:format)                                                                          subs#create
+#                               new_sub GET    /subs/new(.:format)                                                                      subs#new
+#                              edit_sub GET    /subs/:id/edit(.:format)                                                                 subs#edit
+#                                   sub GET    /subs/:id(.:format)                                                                      subs#show
+#                                       PATCH  /subs/:id(.:format)                                                                      subs#update
+#                                       PUT    /subs/:id(.:format)                                                                      subs#update
+#                                 posts POST   /posts(.:format)                                                                         posts#create
+#                              new_post GET    /posts/new(.:format)                                                                     posts#new
+#                             edit_post GET    /posts/:id/edit(.:format)                                                                posts#edit
+#                                  post GET    /posts/:id(.:format)                                                                     posts#show
+#                                       PATCH  /posts/:id(.:format)                                                                     posts#update
+#                                       PUT    /posts/:id(.:format)                                                                     posts#update
+#                                       DELETE /posts/:id(.:format)                                                                     posts#destroy
+#                                  root GET    /                                                                                        subs#index
 #         rails_mandrill_inbound_emails POST   /rails/action_mailbox/mandrill/inbound_emails(.:format)                                  action_mailbox/ingresses/mandrill/inbound_emails#create
 #         rails_postmark_inbound_emails POST   /rails/action_mailbox/postmark/inbound_emails(.:format)                                  action_mailbox/ingresses/postmark/inbound_emails#create
 #            rails_relay_inbound_emails POST   /rails/action_mailbox/relay/inbound_emails(.:format)                                     action_mailbox/ingresses/relay/inbound_emails#create

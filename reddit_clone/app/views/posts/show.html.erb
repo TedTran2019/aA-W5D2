@@ -10,7 +10,9 @@
 
 	<h3>Subs</h3>
 	<ul>
-		<!-- All the subs the post was posted to. -->
+		<% @post.subs.each do |sub| %>
+			<li><%= link_to sub.title, sub_url(sub) %></li>
+		<% end %>
 	</ul>
 
 	<h2>Comments</h2>

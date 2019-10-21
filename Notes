@@ -214,3 +214,6 @@ comments/posts
 Seeds w/ Faker
 Test with rspec and capybara
 Style to make it look like actual Reddit!
+----------------------------------
+
+Should I be setting inverse_of on all associations now? 
